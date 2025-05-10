@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dual Timer & Scoreboard</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Caveat+Brush&family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Share+Tech+Mono&family=Tourney:ital,wdth,wght@0,125,100..900;1,125,100..900&display=swap"
+      rel="stylesheet" />
+    <script
+      src="https://kit.fontawesome.com/cc425edf74.js"
+      crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="scoreboard">
+      <h1>KONTES ROBOT ABU INDONESIA 2025</h1>
+      <div class="content-container">
+        <div class="score-container">
+          <div class="team">
+            <h2>RIVERA</h2>
+            <div class="score" id="scoreA">0</div>
+            <div>
+              <button class="green-button" onclick="changeScore('A', 1)">
+                +1
+              </button>
+              <button class="green-button" onclick="changeScore('A', 2)">
+                +2
+              </button>
+              <button class="green-button" onclick="changeScore('A', 3)">
+                +3
+              </button>
+              <button onclick="changeScore('A', -1)">-1</button>
+            </div>
+          </div>
+
+          <div class="timer">
+            <div id="timer1">
+              <div>
+                <p>Timer</p>
+                <span>02:00</span>
+              </div>
+              <button onclick="resetTimer1()">Reset Timer</button>
+            </div>
+
+            <div id="timer2">
+              <div>
+                <p>Shoot Clock</p>
+                <span>00:20</span>
+              </div>
+              <button onclick="resetTimer2()">Reset Shoot Clock</button>
+            </div>
+
+            <div class="controls">
+              <button onclick="startTimers()">Mulai</button>
+              <button onclick="pauseTimers()">Pause</button>
+              <button onclick="stopTimers()">Stop</button>
+            </div>
+          </div>
+
+          <div class="team">
+            <h2>Maestro Eira</h2>
+            <div class="score" id="scoreB">0</div>
+            <div>
+              <button class="green-button" onclick="changeScore('B', 1)">
+                +1
+              </button>
+              <button class="green-button" onclick="changeScore('B', 2)">
+                +2
+              </button>
+              <button class="green-button" onclick="changeScore('B', 3)">
+                +3
+              </button>
+              <button onclick="changeScore('B', -1)">-1</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button onclick="resetScores()">Reset Skor</button>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
