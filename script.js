@@ -70,6 +70,36 @@ function resetTimer2() {
   updateTimerDisplay("timer2", time2);
 }
 
+function addOneSecond(idTimer){
+  if (running) return;
+  if(idTimer === "timer2") {
+    time2++;
+    updateTimerDisplay("timer2", time2);
+    return;
+  }else if(idTimer === "timer1") {
+    time1++;
+    updateTimerDisplay("timer1", time1);
+    return;
+  }
+}
+
+function minusOneSecond(idTimer){
+  if (running) return;
+  if(idTimer === "timer2") {
+    if(time2 > 0) {
+      time2--;
+      updateTimerDisplay("timer2", time2);
+    }
+    return;
+  }else if(idTimer === "timer1") {
+    if(time1 > 0){
+      time1--;
+      updateTimerDisplay("timer1", time1);
+    }
+    return;
+  }
+}
+
 function changeScore(team, points) {
   if (team === "A") {
     scoreA = Math.max(0, scoreA + points);
