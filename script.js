@@ -1,122 +1,165 @@
-let interval1, interval2;
-let time1 = 120;
-let time2 = 20;
+let interval;
+let input_detik = 120; // Default time
+let detikInput = ""; // Default untuk display
+let possession = "Blue"; // Default possession
 let running = false;
-let scoreA = 0;
-let scoreB = 0;
+let clock = 0;
+let shotclock = 20; // Default shot clock
 
 function updateTimerDisplay(id, time) {
-  const minutes = String(Math.floor(time / 60)).padStart(2, "0");
-  const seconds = String(time % 60).padStart(2, "0");
   const timer = document.getElementById(id);
   if (timer) {
-    const span = timer.querySelector("span");
-    if (span) span.textContent = `${minutes}:${seconds}`;
+    timer.textContent = time.toString();
   }
+  console.log(`Timer updated: ${time} seconds`);
 }
 
-function startTimers() {
+function updateTimer(timer) {
+  clock = timer;
+  console.log("shotclock set to:", shotclock);
   if (running) return;
   running = true;
-
-  interval1 = setInterval(() => {
-    if (time1 > 0 && time2 > 0) {
-      time1--;
-      updateTimerDisplay("timer1", time1);
+  interval = setInterval(() => {
+    if (clock > 0 && shotclock > 0) {
+      clock--;
+      shotclock--;
+      updateTimerDisplay("detik-display", clock);
     } else {
-      clearInterval(interval1);
-      running = false;
-    }
-  }, 1000);
-
-  interval2 = setInterval(() => {
-    if (time2 > 0) {
-      time2--;
-      updateTimerDisplay("timer2", time2);
-    } else {
-      clearInterval(interval2);
+      clearInterval(interval);
+      console.log("Shot clock expired, changing possession.");
+      changePossession(possession === "Blue" ? "Red" : "Blue");
       running = false;
     }
   }, 1000);
 }
 
-function pauseTimers() {
-  clearInterval(interval1);
-  clearInterval(interval2);
+function onStartButtonClick() {
+  if (running) return;
+  const input = document.getElementById("detik-display").textContent;
+  const value = parseInt(input, 10) || 0;
+  input_detik = value;
+  shotclock = input_detik > 20 ? 20 : input_detik;
+  updateTimer(input_detik);
+  console.log("Timer started with " + input_detik + " seconds.");
+  const turns = generateTurns(input_detik, 20, ["Blue", "Red"]);
+  renderTurns(turns);
+}
+
+function onStopButtonClick() {
+  if (!running) return;
+  clearInterval(interval);
+  possession = possession === "Blue" ? "Red" : "Blue"; // Change possession
+  setActiveTeam();
+  const turns = generateTurns(clock, 20, ["Blue", "Red"]);
+  renderTurns(turns);
   running = false;
+  console.log("Clock stopped and reset at " + clock + " seconds.");
 }
 
-function stopTimers() {
-  clearInterval(interval1);
-  clearInterval(interval2);
-  time1 = 120;
-  time2 = 20;
-  updateTimerDisplay("timer1", time1);
-  updateTimerDisplay("timer2", time2);
-  running = false;
-}
-
-function resetTimer1() {
-  if (running) return;
-  clearInterval(interval1);
-  time1 = 120;
-  updateTimerDisplay("timer1", time1);
-}
-
-function resetTimer2() {
-  if (running) return;
-  clearInterval(interval2);
-  time2 = 20;
-  updateTimerDisplay("timer2", time2);
-}
-
-function addOneSecond(idTimer){
-  if (running) return;
-  if(idTimer === "timer2") {
-    time2++;
-    updateTimerDisplay("timer2", time2);
-    return;
-  }else if(idTimer === "timer1") {
-    time1++;
-    updateTimerDisplay("timer1", time1);
-    return;
+function changePossession(possessionTeam) {
+  if (running) {
+    clearInterval(interval);
+    running = false;
   }
+  possession = possessionTeam;
+  const turns = generateTurns(clock, 20, ["Blue", "Red"]);
+  renderTurns(turns);
+  setActiveTeam();
+  console.log(`Possession changed to ${possession}`);
 }
 
-function minusOneSecond(idTimer){
-  if (running) return;
-  if(idTimer === "timer2") {
-    if(time2 > 0) {
-      time2--;
-      updateTimerDisplay("timer2", time2);
+function generateTurns(
+  totalSeconds,
+  turnDuration = 20,
+  teams = ["Blue", "Red"]
+) {
+  const turns = [];
+  let remaining = totalSeconds;
+  let teamIndex = possession === "Blue" ? 0 : 1;
+  let turnNumber = 1;
+
+  while (remaining > 0) {
+    const duration = remaining >= turnDuration ? turnDuration : remaining;
+    turns.push({
+      turn: turnNumber,
+      team: teams[teamIndex % teams.length],
+      duration: duration,
+    });
+    remaining -= duration;
+    teamIndex++;
+    turnNumber++;
+  }
+  return turns;
+}
+
+function renderTurns(turns) {
+  const container = document.getElementById("turns-container");
+  container.innerHTML = "";
+  const template = document.getElementById("turn-template");
+  turns.forEach((t) => {
+    const clone = template.content.cloneNode(true);
+    const card = clone.querySelector(".card");
+    if (t.team.toLowerCase() === "blue") {
+      card.classList.add("blue");
+    } else if (t.team.toLowerCase() === "red") {
+      card.classList.add("red");
     }
-    return;
-  }else if(idTimer === "timer1") {
-    if(time1 > 0){
-      time1--;
-      updateTimerDisplay("timer1", time1);
-    }
-    return;
+    clone.querySelector(".turn-number").textContent = t.turn;
+    clone.querySelector(".turn-team").textContent = t.team;
+    clone.querySelector(".turn-time").textContent = t.duration;
+    clone.querySelector(".turn-team").classList.add(t.team.toLowerCase());
+    container.appendChild(clone);
+  });
+}
+
+function openModalDetik() {
+  detikInput = "";
+  document.getElementById("input-detik-display").textContent = "0";
+  document.getElementById("modal-detik").style.display = "flex";
+}
+
+function closeModalDetik() {
+  document.getElementById("modal-detik").style.display = "none";
+}
+
+function appendDetik(num) {
+  if (detikInput.length < 3) {
+    if (detikInput === "0") detikInput = "";
+    detikInput += num;
+    document.getElementById("input-detik-display").textContent =
+      detikInput || "0";
   }
 }
 
-function changeScore(team, points) {
-  if (team === "A") {
-    scoreA = Math.max(0, scoreA + points);
-    const el = document.getElementById("scoreA");
-    if (el) el.textContent = scoreA;
-  } else if (team === "B") {
-    scoreB = Math.max(0, scoreB + points);
-    const el = document.getElementById("scoreB");
-    if (el) el.textContent = scoreB;
-  }
+function clearDetik() {
+  detikInput = "";
+  document.getElementById("input-detik-display").textContent = "0";
 }
 
-function resetScores() {
-  scoreA = 0;
-  scoreB = 0;
-  const elA = document.getElementById("scoreA");
-  const elB = document.getElementById("scoreB");
-  if (elA) elA.textContent = scoreA;
-  if (elB) elB.textContent = scoreB;
+function sendDetik() {
+  document.getElementById("detik-display").textContent = detikInput || "0";
+  const value = parseInt(detikInput, 10) || 0;
+  input_detik = value;
+  shotclock = input_detik > 20 ? 20 : input_detik;
+  updateTimer(input_detik);
+  console.log("Timer started with " + input_detik + " seconds.");
+  closeModalDetik();
+  const turns = generateTurns(input_detik, 20, ["Blue", "Red"]);
+  renderTurns(turns);
+  setActiveTeam();
+}
+
+function setActiveTeam() {
+  document
+    .querySelector(".red")
+    .classList.toggle("inactive", possession !== "Red");
+  document
+    .querySelector(".blue")
+    .classList.toggle("inactive", possession !== "Blue");
+  document
+    .querySelector(".red")
+    .classList.toggle("active", possession === "Red");
+  document
+    .querySelector(".blue")
+    .classList.toggle("active", possession === "Blue");
 }

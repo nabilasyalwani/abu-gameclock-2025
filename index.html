@@ -18,75 +18,93 @@
   </head>
   <body>
     <div class="scoreboard">
-      <h1>KONTES ROBOT ABU INDONESIA 2025</h1>
-      <div class="content-container">
-        <div class="score-container">
-          <div class="team">
-            <h2>TEAM BIRU</h2>
-            <div class="score" id="scoreA">0</div>
-            <div>
-              <button class="green-button" onclick="changeScore('A', 2)">
-                +2
+      <!-- <p class="rivera">RIVERA</p> -->
+      <h1>ABU ROBOCON 2025</h1>
+      <div class="overtop"></div>
+      <div class="score-container">
+        <div class="above-row">
+          <div class="input-container">
+            <div class="input-team-color">
+              <button class="team-button red" onclick="changePossession('Red')">
+                Red
               </button>
-              <button class="green-button" onclick="changeScore('A', 3)">
-                +3
+            </div>
+            <div class="input-team-color">
+              <button
+                class="team-button blue"
+                onclick="changePossession('Blue')">
+                Blue
               </button>
-              <button class="green-button" onclick="changeScore('A', 7)">
-                +7
-              </button>
-              <button onclick="changeScore('A', -1)">-1</button>
+            </div>
+            <div
+              id="modal-detik"
+              class="modal"
+              style="display: none"
+              onclick="closeModalDetik(event)">
+              <div class="modal-content" onclick="event.stopPropagation()">
+                <div id="input-detik-display" class="detik-display black">
+                  0
+                </div>
+                <div class="keypad">
+                  <div>
+                    <button onclick="appendDetik(1)">1</button>
+                    <button onclick="appendDetik(2)">2</button>
+                    <button onclick="appendDetik(3)">3</button>
+                    <button onclick="appendDetik(4)">4</button>
+                    <button onclick="appendDetik(5)">5</button>
+                  </div>
+                  <div>
+                    <button onclick="appendDetik(6)">6</button>
+                    <button onclick="appendDetik(7)">7</button>
+                    <button onclick="appendDetik(8)">8</button>
+                    <button onclick="appendDetik(9)">9</button>
+                    <button onclick="appendDetik(0)">0</button>
+                  </div>
+                  <div class="control-row">
+                    <button class="control-input" onclick="clearDetik()">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="control-input" onclick="sendDetik()">
+                      <i class="fas fa-arrow-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div class="timer">
-            <div id="timer1">
-              <div>
-                <p>Timer</p>
-                <span>02:00</span>
-              </div>
-              <button onclick="minusOneSecond('timer1')">-1</button>
-              <button onclick="resetTimer1()">Reset Timer</button>
-              <button onclick="addOneSecond('timer1')">+1</button>
-            </div>
-
-            <div id="timer2">
-              <div>
-                <p>Shoot Clock</p>
-                <span>00:20</span>
-              </div>
-              <button onclick="minusOneSecond('timer2')">-1</button>
-              <button onclick="resetTimer2()">Reset Shoot Clock</button>
-              <button onclick="addOneSecond('timer2')">+1</button>
-            </div>
-
-            <div class="controls">
-              <button onclick="startTimers()">Mulai</button>
-              <button onclick="pauseTimers()">Pause</button>
-              <button onclick="stopTimers()">Stop</button>
-            </div>
+          <div
+            id="detik-display"
+            class="detik-display"
+            onclick="openModalDetik()">
+            0
           </div>
-
-          <div class="team">
-            <h2>TEAM MERAH</h2>
-            <div class="score" id="scoreB">0</div>
-            <div>
-              <button class="green-button" onclick="changeScore('B', 2)">
-                +2
-              </button>
-              <button class="green-button" onclick="changeScore('B', 3)">
-                +3
-              </button>
-              <button class="green-button" onclick="changeScore('B', 7)">
-                +7
-              </button>
-              <button onclick="changeScore('B', -1)">-1</button>
-            </div>
+          <div class="controls">
+            <button class="control-button mulai" onclick="onStartButtonClick()">
+              Mulai
+            </button>
+            <button class="control-button stop" onclick="onStopButtonClick()">
+              Stop
+            </button>
           </div>
         </div>
-
-        <div class="controls">
-          <button onclick="resetScores()">Reset Skor</button>
-        </div>
+        <template id="turn-template">
+          <div class="view-turn">
+            <div class="card">
+              <div class="card-content">
+                <div class="turn-each">
+                  <h2>Turn</h2>
+                  <span class="turn-number">1</span>
+                </div>
+                <h3 class="turn-team">Team Name</h3>
+                <div class="turn-clock">
+                  <span class="turn-time">0</span>
+                  <p>detik</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <div id="turns-container"></div>
       </div>
     </div>
     <script src="script.js"></script>
