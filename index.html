@@ -18,6 +18,11 @@
       crossorigin="anonymous"></script>
   </head>
   <body>
+    <button
+      class="fullscreen"
+      onclick="document.documentElement.requestFullscreen()">
+      Fullscreen
+    </button>
     <div class="scoreboard">
       <!-- <p class="rivera">RIVERA</p> -->
       <h1>ABU ROBOCON 2025</h1>
@@ -107,9 +112,6 @@
         </template>
         <div id="turns-container"></div>
       </div>
-      <button onclick="document.documentElement.requestFullscreen()">
-        Fullscreen
-      </button>
     </div>
     <script src="script.js"></script>
   </body>

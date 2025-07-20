@@ -323,7 +323,7 @@ button.blue.inactive {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .modal-content {
@@ -529,6 +529,15 @@ button.blue.inactive {
   }
 }
 
-:fullscreen button {
+button.fullscreen {
+  position: fixed;
+  top: 50px;
+  right: 50px;
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+}
+
+:fullscreen button.fullscreen {
   display: none;
 }
